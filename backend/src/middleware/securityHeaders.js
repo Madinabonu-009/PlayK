@@ -25,13 +25,17 @@ export const securityHeaders = (req, res, next) => {
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
   
   // Content Security Policy (basic)
+  const isProduction = process.env.NODE_ENV === 'production'
+  const siteUrl = isProduction ? 'https://playk.onrender.com' : 'http://localhost:3000'
+  
   const csp = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: https:",
+    "img-src 'self' data: https: blob:",
     "font-src 'self' data:",
-    "connect-src 'self'",
+    `connect-src 'self' ${siteUrl} wss://playk.onrender.com`,
+    "media-src 'self' https: blob:",
     "frame-ancestors 'none'"
   ].join('; ')
   
