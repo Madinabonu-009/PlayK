@@ -218,8 +218,24 @@ app.use('/data/uploads', express.static(uploadsPath))
 
 // Production: Serve frontend static files
 if (process.env.NODE_ENV === 'production') {
-  // Use process.cwd() for Render compatibility
-  const frontendPath = path.join(process.cwd(), 'frontend/dist')
+  // Frontend dist path - try multiple locations for Render compatibility
+  let frontendPath = path.join(__dirname, '../../frontend/dist') // relative to backend/src
+  
+  // Fallback paths
+  const fallbackPaths = [
+    path.join(process.cwd(), '../frontend/dist'),
+    path.join(process.cwd(), 'frontend/dist'),
+    '/opt/render/project/src/frontend/dist'
+  ]
+  
+  if (!fs.existsSync(frontendPath)) {
+    for (const fp of fallbackPaths) {
+      if (fs.existsSync(fp)) {
+        frontendPath = fp
+        break
+      }
+    }
+  }
   
   console.log('Serving frontend from:', frontendPath)
   
