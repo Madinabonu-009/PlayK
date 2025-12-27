@@ -216,6 +216,12 @@ const uploadsPath = process.env.NODE_ENV === 'production'
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 app.use('/data/uploads', express.static(uploadsPath))
 
+// Serve images from frontend/public/images (for gallery)
+const imagesPath = process.env.NODE_ENV === 'production'
+  ? path.join(__dirname, '../../frontend/dist/images')
+  : path.join(__dirname, '../../frontend/public/images')
+app.use('/images', express.static(imagesPath))
+
 // Production: Serve frontend static files
 if (process.env.NODE_ENV === 'production') {
   // Frontend dist path - try multiple locations for Render compatibility
