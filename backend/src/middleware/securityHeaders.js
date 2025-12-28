@@ -30,12 +30,13 @@ export const securityHeaders = (req, res, next) => {
   
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data:",
-    `connect-src 'self' ${siteUrl} wss://playk.onrender.com`,
+    `connect-src 'self' ${siteUrl} wss://playk.onrender.com https://www.youtube.com`,
     "media-src 'self' https: blob:",
+    "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
     "frame-ancestors 'none'"
   ].join('; ')
   
